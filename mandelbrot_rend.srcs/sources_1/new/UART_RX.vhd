@@ -51,6 +51,7 @@ architecture rtl of UART_RX is
     
     signal start_detected : std_logic := '0';
     signal start_reset : std_logic := '0';
+    signal counter_reset : std_logic := '0';
     
     signal bit_pos_counter : integer range 0 to 15 := 0;
     signal shift_count : integer range 0 to 8 := 0;
@@ -79,7 +80,7 @@ begin
     process (clk_i)
     begin
         if rising_edge(clk_i) then
-            if (reset = '1') then
+            if (reset = '1') or (counter_reset = '1') then
                 bit_pos_counter <= 0;
             else 
                 if (clk_enable16x = '1') then
@@ -112,14 +113,17 @@ begin
             if (reset = '1') then
                 state_r <= ST_IDLE;
                 start_reset <= '1';
+                counter_reset <= '1';
                 valid_o <= '0';
             else
                 valid_o <= '0';
                 start_reset <= '0';
+                counter_reset <= '0';
                 if (clk_enable16x = '1') then
                     case state_r is
                         when ST_IDLE =>
                             if (start_detected = '1') then
+                                counter_reset <= '1';
                                 start_reset <= '1'; -- clear start_detected 
                                 state_r <= ST_START;
                             end if;
