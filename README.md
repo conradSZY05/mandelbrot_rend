@@ -40,3 +40,7 @@ The region of interest within the mandelbrot set is Re [-2.5, 1.0] and Im [-1.2,
 The iterator looks at each pixel (0,0) to (639,479) in order, maps the coordinates to a range in the complex plane described above, performs mandelbrot iteration and writes the iteration for that pixel to the framebuffer. When all pixels are done, or when the Basys3 is powered on, or when a UART command is received requiring a rerendering to occur, it starts again from (0,0).  
 
 Since there is no way to synthesise complex number arithmetic, it has to be done using large Q format values. For signed values of Qm.n, a Qm.n added to another Qm.n will result in a Qm.n number. The multiplication of two Qm.n numbers results in a Q2m.2n number. 
+
+# Iterations
+The maximum number of iterations determines how far you can zoom in before the whole thing breaks, how much detail the output has but also unfortunately how long it takes to render. My initial approach naturally was to implement the mandelbrot renderer iteratively, that is, iterating pixel by pixel using a single core. An alternative and 'better' approach that would result in faster rendering although more hardware cost would be using pipelining and or multiple cores to achieve true parallel rendering. That is the next goal, to achieve faster rendering using pipelining, and to also implement multiple cores and achieve true parallel rendering.  
+
