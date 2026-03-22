@@ -34,3 +34,9 @@ Front Porch is a guard period between the last visible pixel and the sync pulse,
 Sync pulse is the synchronisation signal used by the monitor to lock its internal timing, it indicates where a line ends and so hsync is pulled low for this period.  
 Back Porch is a guard period after the sync pulse and before visible pixels begin again, originally its use was to give the CRT beam time to stabalise after repositioning, hsync is high during this period and the output is black.  
   
+# Complex Plane in VHDL
+The region of interest within the mandelbrot set is Re [-2.5, 1.0] and Im [-1.2, 1.2]. VHDL obviously cannot directly use these values to perform mandelbrot iteration, so they need to be scaled to signed values that can be used. Using Q format, with 4 bits representing a signed integer, and 28 bits representing the floating point (Q4.28), VHDL can use these scaed values instead for the real and imaginary part of c in the mandelbrot set iterator.  
+  
+The iterator looks at each pixel (0,0) to (639,479) in order, maps the coordinates to a range in the complex plane described above, performs mandelbrot iteration and writes the iteration for that pixel to the framebuffer. When all pixels are done, or when the Basys3 is powered on, or when a UART command is received requiring a rerendering to occur, it starts again from (0,0).  
+
+Since there is no way to synthesise complex number arithmetic, it has to be done using large Q format values. For signed values of Qm.n, a Qm.n added to another Qm.n will result in a Qm.n number. The multiplication of two Qm.n numbers results in a Q2m.2n number. 
