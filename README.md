@@ -84,4 +84,6 @@ With 255 max iterations, roughly 4 cycles per iteration state and 307200 pixels 
 A clear increase in hardware utilisation for the multi core approach, although a very reasonable tradeoff given the massive improvement in rendering speed achieved. Below you can see a side by side comparison of the rendering speed of the single core approach and the multi core approach. 
 
 https://github.com/user-attachments/assets/a66d5afe-9b41-42b7-9561-b191f3eae7e7
-https://github.com/user-attachments/assets/1056ed31-3373-4c8f-b64f-e27f1ece5e87
+https://github.com/user-attachments/assets/12abdfc0-86e9-4511-bd47-23477c647342
+
+
