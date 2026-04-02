@@ -1,3 +1,9 @@
+Here is the RTL Analysis schematic generated of the top.vhd module in Vivado.  
+<img width="1545" height="491" alt="output-onlinepngtools" src="https://github.com/user-attachments/assets/b262aff8-b586-446c-9052-291302590915" />  
+The project and schematic as a whole can essentially be broken down into 9 parts shown below.  
+<img width="1255" height="748" alt="image" src="https://github.com/user-attachments/assets/5c7effda-aae4-47eb-ac76-7297bf8ddc8a" />
+
+
 # UART
 The first component I implemented was the UART interface. In order for the render to be interactive, the Basys 3 needs to receive commands either from the USB - JTAG/UART port (J4) which is just the same port that is used for power and programming the FPGA, or it can receive commands from the dedicated USB - HID port (J2) which can directly interface with peripherals such as keyboard and mice. The Basys 3 needs to act as a UART Rx receiver, receiving commands pan up/down/left/right and zoom in/out.
 
