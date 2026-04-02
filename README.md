@@ -75,7 +75,7 @@ Colour mapping is simply just taking the bottom 4 bits of the iteration count fo
 <img width="2880" height="2160" alt="image" src="https://github.com/user-attachments/assets/7a082334-591d-43d5-ba0c-d2a851fa4900" />
 
 # Framebuffer
-The framebuffer is by far the most important aspect of the mandelbrot renderer as it is responsible for storing the rendered mandelbrot image, as well as being the main factor in hardware limitation. Using a single core iteration (see more on this in the next section), the hardware utilisation was really getting pushed with 80% of the BRAM being used. The Basys 3 contains 1.8 Mb of BRAM available, at 640x480 resolution, thats 307200 pixels in total, with 4 bits per pixel thats 1228800 pixels in total needed to be stored on the framebuffer at any one time. Any more than 4 bits will exceed the framebuffer limit, that is why I chose only 4 bits to represent the colour of each pixel. This is the hardware utilisation for the single core iteration version. 
+The framebuffer is by far the most important aspect of the mandelbrot renderer as it is responsible for storing the rendered mandelbrot image, as well as being the main factor in hardware limitation. Using a single core iteration (see more on this in the next section), the hardware utilisation was really getting pushed with 80% of the BRAM being used. The Basys 3 contains 1.8 Mb of BRAM available, at 640x480 resolution, thats 307200 pixels in total, with 4 bits per pixel thats 1228800 bits in total needed to be stored on the framebuffer at any one time. Any more than 4 bits will exceed the framebuffer limit, that is why I chose only 4 bits to represent the colour of each pixel. This is the hardware utilisation for the single core iteration version. 
 <img width="1280" height="149" alt="image" src="https://github.com/user-attachments/assets/ac6ea389-dbe9-4d81-9d8e-04dead40802a" />
 The framebuffer is a simple dual port framebuffer, in that it is written to at 100 MHz (the Basys 3 clock), and read at 25.125 MHz (the pixel clock). 
 
@@ -89,7 +89,11 @@ With 255 max iterations, roughly 4 cycles per iteration state and 307200 pixels 
 <img width="1576" height="610" alt="image" src="https://github.com/user-attachments/assets/3b788664-c0ae-421f-b852-7e9c6fad93e8" />
 A clear increase in hardware utilisation for the multi core approach, although a very reasonable tradeoff given the massive improvement in rendering speed achieved. Below you can see a side by side comparison of the rendering speed of the single core approach and the multi core approach. 
 
-https://github.com/user-attachments/assets/a66d5afe-9b41-42b7-9561-b191f3eae7e7
-https://github.com/user-attachments/assets/12abdfc0-86e9-4511-bd47-23477c647342
+![Single core](https://github.com/user-attachments/assets/a66d5afe-9b41-42b7-9561-b191f3eae7e7)  
 
+![Multi core](https://github.com/user-attachments/assets/12abdfc0-86e9-4511-bd47-23477c647342)  
 
+# Limitations and future improvements
+- Currently there is a 21 level zoom limit before total precision loss, this is due to the fixed point scaling of complex coordinates not being large enough. Right now coordinates are being scaled to Q4.28 format, I may consider increasing the number of fixed points bits to investigate how much the Basys 3 can actually handle later.
+- Higher spec boards will run this better, as they will allow more cores which will increase time to render a frame, more colours since the on board BRAM will likely be higher, and likely a larger zoom limit.
+- Smoother colour bands, right now the escape time iteration places block colours abruptly next to each other just because of the nature of the algorithm. A gradient algorithm (a normalised iteration count) could be implemented to make the different colour layers appear smoother. Although this would likely be BRAM expensive and require a higher spec board as it would require more than 4 colour bits per pixel, which is already pushing the Basys 3 BRAM usage at 80%. 
